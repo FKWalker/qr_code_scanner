@@ -17,6 +17,8 @@
     /* Responsive scanner wrapper */
     #reader {
       display: none;
+      height: 100dvh;
+      object-fit: cover;
     }
 
     /* Fixed position for Stop button */
@@ -34,8 +36,14 @@
     }
 
     body{
-      height: 100vh;
+      margin: 0;
+      padding: 0;
       overflow: hidden;
+    }
+
+    html{
+      margin: 0;
+      padding: 0;
     }
   </style>
 </head>
@@ -116,7 +124,7 @@
             : reverseAspectRatio
 
           const config = {
-            fps: 20, // frame per seconds for qr code scanning
+            fps: 50, // frame per seconds for qr code scanning
             qrbox: { width: qrBoxSize, height: qrBoxSize },
             videoConstraints: {
               facingMode: 'environment',
