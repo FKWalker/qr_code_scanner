@@ -105,17 +105,37 @@
           html5QrCode = new Html5Qrcode("reader");
 
           const qrBoxSize = 200;
+
+          const width = window.innerWidth
+          const height = window.innerHeight
+          const aspectRatio = width / height
+          const reverseAspectRatio = height / width
+
+          const mobileAspectRatio = reverseAspectRatio > 1.5
+            ? reverseAspectRatio + (reverseAspectRatio * 12 / 100)
+            : reverseAspectRatio
+
           const config = {
             fps: 20, // frame per seconds for qr code scanning
             qrbox: { width: qrBoxSize, height: qrBoxSize },
             videoConstraints: {
-              width: { min: 640, ideal: 1280 },
-              height: { min: 480, ideal: 1280 },
-              aspectRatio: 4 / 3,
               facingMode: 'environment',
-              advanced: [{ width: 1920, height: 1280 }, { aspectRatio: 4 / 3 }],
+              aspectRatio: width < 600
+                ? mobileAspectRatio
+                : aspectRatio,
             },
           }
+          // const config = {
+          //   fps: 20, // frame per seconds for qr code scanning
+          //   qrbox: { width: qrBoxSize, height: qrBoxSize },
+          //   videoConstraints: {
+          //     width: { min: 640, ideal: 1280 },
+          //     height: { min: 480, ideal: 1280 },
+          //     aspectRatio: 4 / 3,
+          //     facingMode: 'environment',
+          //     advanced: [{ width: 1920, height: 1280 }, { aspectRatio: 4 / 3 }],
+          //   },
+          // }
 
 
           readerDiv.style.display = "flex";
