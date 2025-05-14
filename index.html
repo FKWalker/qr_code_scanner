@@ -103,14 +103,17 @@
           const cameraId = selectedCameraId; // Use the determined camera ID
           html5QrCode = new Html5Qrcode("reader");
 
-          const qrBoxSize = 400
-          const width = window.innerWidth
-          const height = window.innerHeight
-          const aspectRatio = width / height
+          const qrBoxSize = 400;
           const config = {
             fps: 20, // frame per seconds for qr code scanning
-            aspectRatio,
-            qrbox: { width: 250, height: 250},
+            qrbox: { width: qrBoxSize, height: qrBoxSize },
+            videoConstraints: {
+              width: { min: 640, ideal: 1280 },
+              height: { min: 480, ideal: 1280 },
+              aspectRatio: 4 / 3,
+              facingMode: 'environment',
+              advanced: [{ width: 1920, height: 1280 }, { aspectRatio: 4 / 3 }],
+            },
           }
 
 
