@@ -74,7 +74,33 @@
     startBtn.addEventListener("click", () => {
       Html5Qrcode.getCameras().then(cameras => {
         if (cameras && cameras.length > 0) {
-          const cameraId = cameras[0].id;
+          let selectedCameraId;
+
+          // Try to find the back camera by its label
+          const backCamera = cameras.find(camera =>
+              camera.label.toLowerCase().includes('back') ||
+              camera.label.toLowerCase().includes('rear') || // "rear" is another common term
+              camera.label.toLowerCase().includes('environment') // "environment" is often used for back cameras in MediaStreamTrack constraints
+          );
+
+          if (backCamera) {
+              selectedCameraId = backCamera.id;
+              console.log("Back camera selected:", backCamera.label);
+          } else if (cameras.length > 1) {
+              // Fallback: If no specific label found and multiple cameras exist,
+              // the last camera in the list is often the back camera.
+              // This is a heuristic and might not always be reliable.
+              // For a better user experience, you might want to let the user choose if a clear back camera isn't found.
+              selectedCameraId = cameras[cameras.length - 1].id;
+              console.warn("Could not explicitly identify back camera by label. Using the last camera in the list as a fallback:", cameras[cameras.length - 1].label);
+          } else {
+              // If only one camera exists, or if no back camera was identified and only one is present.
+              selectedCameraId = cameras[0].id;
+              console.log("Using the only available camera or the first camera as fallback:", cameras[0].label);
+          }
+
+          // const cameraId = cameras[0].id; // Your original line, replaced by selectedCameraId
+          const cameraId = selectedCameraId; // Use the determined camera ID
           html5QrCode = new Html5Qrcode("reader");
 
           const qrBoxSize = 400
